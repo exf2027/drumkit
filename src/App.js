@@ -1,10 +1,10 @@
 import './App.css';
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import image from './resources/background.jpg';
 // import { Typography } from "@mui/material";
 import { styled, ThemeProvider } from "@mui/material/styles";
 import theme from './theme.js';
-import useSound from 'use-sound';
+// import useSound from 'use-sound';
 import clapSound from './resources/sounds/clap.wav';
 import hihatSound from './resources/sounds/hihat.wav';
 import kickSound from './resources/sounds/kick.wav';
@@ -95,23 +95,6 @@ const DrumText = styled('div')(({ theme }) => ({
 
 function DrumKit() {
 
-  const unAudio = new Audio(clapSound)
-  const [soundPlaying, setSoundPlaying] = useState(unAudio);
-
-  // const soundsPath = "/resources/sounds/";
-
-  // const myButtons = [
-  //   {value: 'A', label: 'clap', sound: (soundsPath + "clap.wav")},
-  //   {value: 'S', label: 'hihat', sound: (soundsPath + "hihat.wav")},
-  //   {value: 'D', label: 'kick', sound: (soundsPath + "kick.wav")},
-  //   {value: 'F', label: 'openhat', sound: (soundsPath + "openhat.wav") },
-  //   {value: 'G', label: 'boom', sound: (soundsPath + "boom.wav") },
-  //   {value: 'H', label: 'ride', sound: (soundsPath + "ride.wav") },
-  //   {value: 'J', label: 'snare', sound: (soundsPath + "snare.wav") },
-  //   {value: 'K', label: 'tom', sound: (soundsPath + "tom.wav") },
-  //   {value: 'L', label: 'tink', sound: (soundsPath + "tink.wav") }
-  // ]
-
   const myButtons = [
     {value: 'A', label: 'clap', sound: new Audio(clapSound)},
     {value: 'S', label: 'hihat', sound: new Audio(hihatSound)},
@@ -122,23 +105,12 @@ function DrumKit() {
     {value: 'J', label: 'snare', sound: new Audio(snareSound)},
     {value: 'K', label: 'tom', sound: new Audio(tomSound)},
     {value: 'L', label: 'tink', sound: new Audio(tinkSound)}
-  ]
+  ];
 
-  // function onDrumClick(theSound) {
-	// 	setSoundPlaying(theSound);
-  //   // play();
-	// };
-
-  // const [play] = useSound(
-  //   '/resources/sounds/clap.wav',
-  //   // soundPlaying,
-  //   // { volume: 0.25 }
-  // );
-
-  const play = () => {
-    console.log(soundPlaying);
-    soundPlaying.play();
-  }
+  const onClickPlayDrumSound = (theSound) => {
+    console.log(theSound);
+    theSound.play();
+	};
 
   return (
     <ThemeProvider theme={theme}>
@@ -148,10 +120,10 @@ function DrumKit() {
         <MyBody className="display-linebreak">
           {myButtons.map((myButton, index) => (
             <MyButton 
+            className="display-linebreak"
               key={index}
               onMouseDown={() => {
-                setSoundPlaying(myButton.sound);
-                play();
+                onClickPlayDrumSound(myButton.sound);
               }}
             >
               <KeyboardText>
@@ -161,10 +133,8 @@ function DrumKit() {
               <DrumText>
                 {myButton.label}
               </DrumText>
-              <audio src='/resources/sounds/clap.wav'>AUDIO</audio>
             </MyButton>
           ))}
-          <audio src='/resources/sounds/clap.wav'>AUDIO</audio>
         </MyBody>
       </MyBackground>
     </ThemeProvider>
